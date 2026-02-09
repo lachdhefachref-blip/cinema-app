@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import MovieList from "./components/MovieList";
+import Filter from "./components/Filter";
+import AddMovie from "./components/AddMovie";
 
-function App() {
+const App = () => {
+  const [movies, setMovies] = useState([
+    {
+      title: "Inception",
+      description: "Un film sur les rêves.",
+      posterURL: "https://image-url.com/inception.jpg",
+      rating: 5,
+    },
+    {
+      title: "Titanic",
+      description: "Une histoire d'amour sur le Titanic.",
+      posterURL: "https://image-url.com/titanic.jpg",
+      rating: 4,
+    },
+  ]);
+
+  const [filterTitle, setFilterTitle] = useState("");
+  const [filterRating, setFilterRating] = useState(0);
+
+  // Ajouter un nouveau film
+  const addMovie = (newMovie) => {
+    setMovies([...movies, newMovie]);
+  };
+
+  // Filtrage des films
+  const filteredMovies = movies.filter(
+    (movie) =>
+      movie.title.toLowerCase().includes(filterTitle.toLowerCase()) &&
+      movie.rating >= filterRating
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Ma Liste de Films</h1>
+
+      <AddMovie addMovie={addMovie} />
+      <Filter setFilterTitle={setFilterTitle} setFilterRating={setFilterRating} />
+      <MovieList movies={filteredMovies} />
     </div>
   );
-}
+};
 
 export default App;
